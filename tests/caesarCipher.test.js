@@ -6,17 +6,51 @@ import { textToAscii, applyShift, asciiToText } from "../functions/caesarCipher"
 test("empty string returns -1", () => {
   expect(textToAscii('')).toBe(-1);
 })
+// lowercase
 test("in: baz, out: [98, 97, 122]", () => {
   expect(textToAscii('baz')).toEqual([98, 97, 122]);
 })
+// uppercases
 test("in: BAZ, out: [66, 65, 90]", () => {
   expect(textToAscii('BAZ')).toEqual([66, 65, 90]);
 })
+// mixed upper and lowercase
 test("in: fOo, out: [102, 79, 111]", () => {
   expect(textToAscii('fOo')).toEqual([102, 79, 111])
 })
+// mixed uppercase, lowercase, numbers and symbols
 test("in: Python3.10, out: [80,121,116,104,111,110,51,46,49,48]", () => {
   expect(textToAscii('Python3.10')).toEqual([80,121,116,104,111,110,51,46,49,48]);
+})
+
+/** applyShift */
+// apply shift to only letters lowercase
+test("shift=3, in: [97,98,99], out: [100,101,102]", () => {
+  expect(applyShift([97,98,99], 3)).toEqual([100,101,102])
+})
+// apply shift to only letters lowercase
+test("shift=4, in: [65,66,67], out: [69,70,71]", () => {
+  expect(applyShift([65,66,67], 4)).toEqual([69,70,71])
+})
+// shifts are applied in circular form (after z/Z backs to a/A)
+test("shift=4, in: [97,98,99,120,121,122], out: [101,102,103,98,99,100]", () => {
+  expect(applyShift([97,98,99,120,121,122], 4)).toEqual([101,102,103,98,99,100])
+})
+// shift with multpile of 26 returns the same array
+test("shift=26, in: [65,66,67], out: [65,66,67]", () => {
+  expect(applyShift([65,66,67], 26)).toEqual([65,66,67])
+})
+// shifts greater than 25 gets applied mod of 26
+test("shift=28, in: [65,66,67], out: [67,68,69]", () => {
+  expect(applyShift([65,66,67], 28)).toEqual([67,68,69])
+})
+// Deal with empty arrays
+test("in: [], out: null", () => {
+  expect(applyShift([], 10)).toEqual([]);
+})
+// Deal with non array objects
+test("in: -1, out: null", () => {
+  expect(applyShift(-1, 5)).toBe(null);
 })
 
 /** Test Caesar Code */
