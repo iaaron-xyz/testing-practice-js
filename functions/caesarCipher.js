@@ -1,10 +1,10 @@
-function caesarCipher(plainText, shift) {
+function caesarCipher(plainText, shift=13) {
   // convert text chars to ascii array (integers)
   const arrCodes = textToAscii(plainText);
   // add/apply shift to update values based in its value
-  applyShift(arrCodes, shift);
+  const shiftedCodes = applyShift(arrCodes, shift);
   // convert ascii array back again into text string
-  const cipheredText = asciiToText(arrCodes);
+  const cipheredText = asciiToText(shiftedCodes);
   // return ciphered text
   return cipheredText;
 }
@@ -41,10 +41,18 @@ export function applyShift(arr, shift) {
 }
 
 export function asciiToText(arr) {
-  return;
+  if (arr === null) return null;
+  if (!Array.isArray(arr)) return null;
+  if (arr.length === 0) return null;
+
+  let cipheredText = '';
+  for (let i = 0; i < arr.length; i += 1) {
+    cipheredText += String.fromCharCode(arr[i]);
+  }
+  return cipheredText;
 }
 
 
 // console.log(textToAscii('baz'));
 
-// export default caesarCipher;
+export default caesarCipher;
